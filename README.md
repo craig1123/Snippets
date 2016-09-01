@@ -1,5 +1,5 @@
 # Atom-Snippets
-My snippets for angular, react and gulp
+How to get my snippets for angular, react and gulp:
 
 ####Mac:
 1. Click "Atom" in the menu bar
