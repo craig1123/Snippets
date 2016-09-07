@@ -281,6 +281,24 @@
             }
             """
 
+
+  'axios':
+    'prefix': 'axios'
+    'body': """
+        handleChange(e) {
+          if (e.keyCode === 13) {
+            console.log("sent request")
+            axios.get(`${1:http://api.com}`)
+              .then((result) => {
+                console.log(result);
+                this.setState({
+                  $2
+                })
+              })
+          }
+        }
+            """
+
   'React ES6 bind method to this':
     'prefix': 'rbind',
     'body': """
@@ -304,7 +322,12 @@
   'Input':
     'prefix': 'input'
     'body': """
-            <input className="$1" type="${2:text}" placeholder="$3" onChange={ (event) => this.${1:functionName}(event.target.value)} />
+            <input
+              className="$1"
+              type="${2:text}"
+              placeholder="$3"
+              onChange={(e) => this.${1:functionName}(e.target.value)}
+            />
             $4
             """
 
