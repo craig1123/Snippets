@@ -17,7 +17,7 @@ If you notice on the angular functions (ctrl, serv, dir) the angular module look
 ${2:angular.module("${1:app}")}...
 ```
 
-This makes it easier for you to decide what kind of layout you want to use when writing your functions. After you define the app name (which you can tab right through), it will heighlight that whole area of text, allowing you to leave it, remove it, or replace it. 
+The $# tells you where the cursor will start when the snippet is created. When you press 'tab', the cursor will jump to the next number. You can either leave, remove, or replace the highlighted area.
 
 
 ####ENJOY!
