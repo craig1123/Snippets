@@ -8,8 +8,6 @@
             var app = angular.module("${1:app}", [$2]);
             """
 
-
-
   'controller':
     'prefix': 'ctrl'
     'body': """
@@ -17,8 +15,6 @@
               $3
             });
             """
-
-
 
   'service':
     'prefix': 'serv'
@@ -74,8 +70,6 @@
             });
             """
 
-
-
   'route/s config':
     'prefix': 'config'
     'body': """
@@ -91,8 +85,6 @@
               });
             """
 
-
-
   'state':
     'prefix': '.state'
     'body': """
@@ -106,15 +98,11 @@
             $8
             """
 
-
-
   'console.log':
     'prefix': 'con'
     'body': """
             console.log($1);
             """
-
-
 
   '.then':
     'prefix': '.then'
@@ -123,8 +111,6 @@
               $1
             });
             """
-
-
 
   '.catch':
     'prefix': '.catch'
@@ -179,8 +165,6 @@
             });
             """
 
-
-
   'Endpoints':
     'prefix': 'end'
     'body': """
@@ -189,7 +173,6 @@
             app.put('/${1:model}/:id', ${2:model}Ctrl.update);
             app.delete('/${1:model}/:id', ${2:model}Ctrl.delete);
             """
-
 
 
   'Server Controller':
@@ -238,8 +221,6 @@
             };
             """
 
-
-
   'Schema':
     'prefix': 'schema'
     'body': """
@@ -263,7 +244,7 @@
     'body': """
             import React from 'react';
 
-            export default class ${1:MyComponent} extends Component {
+            export default class ${1:MyComponent} extends React.Component {
 
               constructor(props){
                 super(props);
@@ -280,7 +261,6 @@
               }
             }
             """
-
 
   'axios':
     'prefix': 'axios'
@@ -318,7 +298,6 @@
             import ${1:component} from "${2:component}";
             """
 
-
   'Input':
     'prefix': 'input'
     'body': """
@@ -331,16 +310,12 @@
             $4
             """
 
-
-
   'Button':
     'prefix': 'button'
     'body': """
             <button className="$1" type="button" onClick={}>$2</button>
             $3
             """
-
-
 
   'Header':
     'prefix': 'h1'
@@ -349,16 +324,12 @@
             $4
             """
 
-
-
   'a ref':
     'prefix': 'a'
     'body': """
             <a href="$1">$2</a>
             $3
             """
-
-
 
   'Image':
     'prefix': 'img'
@@ -367,16 +338,12 @@
             $3
             """
 
-
-
   'Paragraph':
     'prefix': 'p'
     'body': """
             <p className="$1">$2</p>
             $3
             """
-
-
 
   'Select':
     'prefix': 'select'
@@ -392,7 +359,6 @@
     'body': """
             var id = this.props.params.id
             """
-
 
 # React-Router SNIPPET
 # ============================================================
@@ -488,16 +454,11 @@
     'body': 'transition.redirect(${1:to}, ${2:params}, ${3:query});'
 
 
-'.text.html, .text.html .meta.scope.between-tag-pair, .text.html .punctuation.tag.begin':
-
-
   'ng-view':
     'prefix': 'ng-view'
     'body': """
             <ng-view></ng-view>
             """
-
-
 
   'modal template':
     'prefix': 'modal'
@@ -506,7 +467,71 @@
             <div class="fade" ${1:ng-click="close()"}></div>
             """
 
+  # Gulp SNIPPET
+  # ============================================================
 
+  'gulpfile':
+    'prefix': 'gulp'
+    'body': """
+            import gulp from 'gulp';
+            import concat from 'gulp-concat';
+            import annotate from 'gulp-ng-annotate';
+            import plumber from 'gulp-plumber';
+            import uglify from 'gulp-uglify';
+            import watch from 'gulp-watch';
+            import sass from 'gulp-sass';
+            import path from 'path';
+            import babel from 'gulp-babel';
+
+            const paths = {
+              jsSource: ['./public/app/**/*.js', '!/public/bundle.js'],
+              sassSource: ['./public/${1:app}/**/*.sass'],
+              serverSource: ['./server/*.js']
+            };
+            const sassOptions = {
+              errLogToConsole: true,
+              outputStyle: 'expanded',
+              paths: [ path.join(__dirname, 'styles') ]
+            };
+
+            gulp.task('js', () => {
+              return gulp.src(paths.jsSource)
+              .pipe(plumber())
+              .pipe(babel({
+                 presets: ["es2015"]
+              })) //comment out if not using ES6
+              .pipe(concat('bundle.js'))
+              .pipe(annotate())
+              //.pipe(uglify()) //Uncomment when code is production ready
+              .pipe(gulp.dest('./public'));
+            });
+            gulp.task('server', () => {
+              return gulp.src(paths.serverSource)
+              .pipe(plumber())
+              .pipe(babel({
+                presets: ["es2015"]
+              }))
+              .pipe(gulp.dest('./dist'));
+            });
+            gulp.task('sass', () => {
+              return gulp.src(paths.sassSource)
+                .pipe(sass(sassOptions).on('error', sass.logError))
+                .pipe(concat('style.css'))
+                .pipe(gulp.dest('./public'));
+            });
+            $2
+
+            gulp.task('watch', () => {
+              gulp.watch(paths.jsSource, ['js']);
+              gulp.watch(paths.serverSource, ['server']);
+              gulp.watch(paths.sassSource, ['sass']);
+            });
+
+            gulp.task('default', ['watch', 'js', 'server', 'sass']);
+            """
+
+  # CSS SNIPPET
+  # ============================================================
 
 '.source.css':
   'modal classes':
@@ -538,70 +563,3 @@
               z-index: 90;
             }
             """
-# GULP SNIPPET
-# ============================================================
-'gulpfile':
-  'prefix': 'gulp'
-  'body': """
-          // REQUIRE DEPENDENCIES
-          // ============================================================
-          import gulp from 'gulp';
-          import concat from 'gulp-concat';
-          import annotate from 'gulp-ng-annotate';
-          import plumber from 'gulp-plumber';
-          import uglify from 'gulp-uglify';
-          import watch from 'gulp-watch';
-          import sass from 'gulp-sass';
-          import path from 'path';
-          import babel from 'gulp-babel';
-          // DECLARE FILE PATHS
-          // ============================================================
-          const paths = {
-            jsSource: ['./public/app/**/*.js', '!/public/bundle.js'],
-            sassSource: ['./public/${1:app}/**/*.sass'],
-            serverSource: ['./server/*.js']
-          };
-          const sassOptions = {
-            errLogToConsole: true,
-            outputStyle: 'expanded',
-            paths: [ path.join(__dirname, 'styles') ]
-          };
-          // DEFINE TASKS
-          // ============================================================
-          gulp.task('js', () => {
-            return gulp.src(paths.jsSource)
-            .pipe(plumber())
-            .pipe(babel({
-               presets: ["es2015"]
-            })) //comment out if not using ES6
-            .pipe(concat('bundle.js'))
-            .pipe(annotate())
-            //.pipe(uglify()) //Uncomment when code is production ready
-            .pipe(gulp.dest('./public'));
-          });
-          gulp.task('server', () => {
-            return gulp.src(paths.serverSource)
-            .pipe(plumber())
-            .pipe(babel({
-              presets: ["es2015"]
-            }))
-            .pipe(gulp.dest('./dist'));
-          });
-          gulp.task('sass', () => {
-            return gulp.src(paths.sassSource)
-              .pipe(sass(sassOptions).on('error', sass.logError))
-              .pipe(concat('style.css'))
-              .pipe(gulp.dest('./public'));
-          });
-          $2
-          // WATCH TASKS
-          // ============================================================
-          gulp.task('watch', () => {
-            gulp.watch(paths.jsSource, ['js']);
-            gulp.watch(paths.serverSource, ['server']);
-            gulp.watch(paths.sassSource, ['sass']);
-          });
-          // RUN DEFAULT TASK - first thing to run when gulp is called
-          // ============================================================
-          gulp.task('default', ['watch', 'js', 'server', 'sass']);
-          """
