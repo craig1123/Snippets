@@ -122,8 +122,9 @@
 
 
 # Backend SNIPPET
+# Mongo
 # ============================================================
-  'Server':
+  'Mongo Server':
     'prefix': 'server-mongo'
     'body': """
             // Require dependencies
@@ -234,6 +235,46 @@
 
             // Export Schema
             module.exports = mongoose.model('${2:Model}', ${1:model}Schema);
+            """
+# SQL
+# ============================================================
+
+  'SQL Server':
+    'prefix': 'server-sql'
+    'body': """
+            // Require dependencies
+            var express = require('express');
+            var cors = require('cors');
+            var bodyParser = require('body-parser');
+            var massive = require('massive');
+
+            // Controllers
+            var ${1:model}Ctrl = require('./controllers/${1:model}Ctrl');
+
+            // SQL connection
+            var connectionString = 'postgress://craig@localhost/sandbox'
+            var massiveInstance = massive.connectSync({connectionString : connectionString});
+            var app = express();
+            app.set('db', massiveInstance);
+
+            // initilize dependencies
+            app.use(cors({origin: 'http://localhost:8080/'}));
+            app.use(bodyParser.json());
+            app.use(express.static('../public'));
+
+            // Endpoints
+            app.get('/${1:model}', ${1:model}Ctrl.read);
+            app.post('/${1:model}', ${1:model}Ctrl.create);
+            app.put('/${1:model}/:id', ${1:model}Ctrl.update);
+            app.delete('/${1:model}/:id', ${1:model}Ctrl.delete);
+
+            // Variables
+            var port = ${2:8080};
+
+            // App Listen
+            app.listen(port, function() {
+              console.log('listening on port ', port);
+            });
             """
 
 # React JSX SNIPPET
