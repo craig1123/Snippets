@@ -280,16 +280,13 @@
 # React JSX SNIPPET
 # ============================================================
 
-  'React':
-    'prefix': 'react'
+  'React Component':
+    'prefix': 'react-component'
     'body': """
             import React from 'react';
-
             export default class ${1:MyComponent} extends React.Component {
-
               constructor(props){
                 super(props);
-
                 this.state = {};
               }
 
@@ -303,28 +300,63 @@
             }
             """
 
-  'axios':
-    'prefix': 'axios'
+  'React Functional':
+    'prefix': 'react-functional'
     'body': """
-        handleChange(e) {
-          if (e.keyCode === 13) {
-            console.log("sent request")
-            axios.get(`${1:http://api.com}`)
-              .then((result) => {
-                console.log(result);
-                this.setState({
-                  $2
-                })
-              })
-          }
-        }
+            import React from 'react';
+
+            const ${1:Component} = () => {
+              return (
+                <div>
+
+                </div>
+              )
+            }
+
+            export default ${1:Component};
             """
 
-  'React ES6 bind method to this':
-    'prefix': 'rbind',
+  'import':
+    'prefix': 'import'
     'body': """
-      this.${1} = this.${1}.bind(this);
-    """
+            import ${1:Component} from '${1:Component}';
+            """
+
+  'import object':
+    'prefix': 'imm'
+    'body': """
+            import { $1 } from '$2';
+            """
+
+  'import PropTypes':
+    'prefix': 'import-propTypes'
+    'body': """
+            import PropTypes from 'prop-types';
+            """
+
+  'propTypes Static':
+    'prefix': 'propTypes-static'
+    'body': """
+            static propTypes {
+              $2: PropTypes.$3,
+            }
+            """
+
+  'propTypes Functional':
+    'prefix': 'propTypes-functional'
+    'body': """
+            ${1:Component}.propTypes = {
+              $2: PropTypes.$3,
+            };
+            """
+
+  'defaultProps Functional':
+    'prefix': 'defaultProps-functional'
+    'body': """
+            ${1:Component}.defaultProps = {
+              $2: $3,
+            };
+            """
 
   'Div':
     'prefix': 'div'
@@ -333,10 +365,17 @@
               $2
             </div>
             """
+
+  'Span':
+    'prefix': 'span'
+    'body': """
+            <span>$1</span>
+            """
+
   'Import':
     'prefix': 'import'
     'body': """
-            import ${1:component} from "${2:component}";
+            import ${1:Component} from "${2:Component}";
             """
 
   'Input':
@@ -395,117 +434,10 @@
             $4
             """
 
-  'id':
-    'prefix': 'id'
+  'eslint-disable-line':
+    'prefix': 'eslint-disable-line'
     'body': """
-            var id = this.props.params.id
-            """
-
-# React-Router SNIPPET
-# ============================================================
-  'Router: router skeleton':
-    'prefix': 'react-router'
-    'body': """
-      import React from 'react';
-      import ReactDOM from 'react-dom';
-      import { Route, Router, DefaultRoute, NotFoundRoute, browserHistory } from 'react-router';
-      // -- Import components
-      import ${1:App} from '${2}';
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const ${3:id} = document.getElementById("${3:id}");
-
-        if(${3:id}){
-            ReactDOM.render(
-                <Router history={browserHistory}>
-                    <Route path="/" component={${1:App}}>
-                        ${4}
-                    </Route>
-                </Router>
-            , ${3:id})
-        }
-      });
-    """
-
-  'Router: <Route />':
-    'prefix': 'Route'
-    'body': "<Route path='${1}' component={${2}} />"
-
-  'Router: Nested <Route></Route>':
-    'prefix': 'Route-nested'
-    'body': """
-      <Route path='${1}' component={${2}}>
-        ${5}
-      </Route>
-    """
-
-  'Router: <Redirect />':
-    'prefix': 'Redirect-route'
-    'body': '<Redirect from=\'${1}\' to=\'${2}\' />'
-
-  'Router: <NotFoundRoute />':
-    'prefix': 'NotFoundRoute'
-    'body': '<NotFoundRoute component={${1}}/>'
-
-  'Router: <DefaultRoute />':
-    'prefix': 'DefaultRoute'
-    'body': '<DefaultRoute component={${1}} />'
-
-  'Router: <Link />':
-    'prefix': 'Link'
-    'body': '<Link to={${1}}></Link>'
-
-  'Router: onEnter={}':
-    'prefix': 'onEnter'
-    'body': 'onEnter={${1}}'
-
-  'Router: onLeave={}':
-    'prefix': 'onLeave'
-    'body': 'onLeave={${1}}'
-
-  'Router: setRouteLeaveHook':
-    'prefix': 'setRouteLeaveHook'
-    'body': """
-      this.props.router.setRouteLeaveHook(
-        this.props.route,
-        this.routerWillLeave
-      )
-    """
-
-  'Router: routerWillLeave()':
-    'prefix': 'routerWillLeave'
-    'body': """
-      routerWillLeave() {
-        if (${1}) {
-          return '${2:You have unsaved information, are you sure you want to leave?}';
-        }
-      }
-    """
-
-  'Router: transition.abort()':
-    'prefix': 'transition-abort'
-    'body': 'transition.abort();'
-
-  'Router: transition.retry()':
-    'prefix': 'transition-retry'
-    'body': 'transition.retry();'
-
-  'Router: transition.redirect()':
-    'prefix': 'redirect-transition'
-    'body': 'transition.redirect(${1:to}, ${2:params}, ${3:query});'
-
-
-  'ng-view':
-    'prefix': 'ng-view'
-    'body': """
-            <ng-view></ng-view>
-            """
-
-  'modal template':
-    'prefix': 'modal'
-    'body': """
-            <div class="overlay"></div>
-            <div class="fade" ${1:ng-click="close()"}></div>
+            // eslint-disable-line
             """
 
   # Gulp SNIPPET
